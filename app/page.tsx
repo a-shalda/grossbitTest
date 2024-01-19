@@ -45,32 +45,32 @@ export default function Home() {
 
     if (side === 'left') {
       (leftSide === 'BTC' && rightSide === 'BTC') ? setNumberRight(value)
-      : (leftSide === 'BTC' && rightSide === 'ETH') ? setNumberRight(value * btc / eth)
-      : (leftSide === 'BTC' && rightSide === 'USDT') ? setNumberRight(value * btc)
+      : (leftSide === 'BTC' && rightSide === 'ETH') ? setNumberRight(Math.round(((value * btc / eth) + Number.EPSILON) * 100000000) / 100000000)
+      : (leftSide === 'BTC' && rightSide === 'USDT') ? setNumberRight(Math.round(((value * btc) + Number.EPSILON) * 100000000) / 100000000)
   
-      : (leftSide === 'ETH' && rightSide === 'ETH') ? setNumberRight(value)
-      : (leftSide === 'ETH' && rightSide === 'BTC') ? setNumberRight(value * eth / btc)
-      : (leftSide === 'ETH' && rightSide === 'USDT') ? setNumberRight(value * eth)
+      : (leftSide === 'ETH' && rightSide === 'ETH') ? setNumberRight(value) 
+      : (leftSide === 'ETH' && rightSide === 'BTC') ? setNumberRight(Math.round(((value * eth / btc) + Number.EPSILON) * 100000000) / 100000000)
+      : (leftSide === 'ETH' && rightSide === 'USDT') ? setNumberRight(Math.round(((value * eth) + Number.EPSILON) * 100000000) / 100000000)
   
       : (leftSide === 'USDT' && rightSide === 'USDT') ? setNumberRight(value)
-      : (leftSide === 'USDT' && rightSide === 'BTC') ? setNumberRight(value * usdtbtc)
-      : (leftSide === 'USDT' && rightSide === 'ETH') ? setNumberRight(value * usdteth)
+      : (leftSide === 'USDT' && rightSide === 'BTC') ? setNumberRight(Math.round(((value * usdtbtc) + Number.EPSILON) * 100000000) / 100000000)
+      : (leftSide === 'USDT' && rightSide === 'ETH') ? setNumberRight(Math.round(((value * usdteth) + Number.EPSILON) * 100000000) / 100000000)
   
     : null
     }
 
     else if (side === 'right') {
-      (leftSide === 'BTC' && rightSide === 'BTC') ? setNumberLeft(value)
-      : (leftSide === 'BTC' && rightSide === 'ETH') ? setNumberLeft(value * eth / btc)
-      : (leftSide === 'BTC' && rightSide === 'USDT') ? setNumberLeft(value * usdtbtc)
+      (leftSide === 'BTC' && rightSide === 'BTC') ? setNumberLeft(value) 
+      : (leftSide === 'BTC' && rightSide === 'ETH') ? setNumberLeft(Math.round(((value * eth / btc) + Number.EPSILON) * 100000000) / 100000000)
+      : (leftSide === 'BTC' && rightSide === 'USDT') ? setNumberLeft(Math.round(((value * usdtbtc) + Number.EPSILON) * 100000000) / 100000000)
   
-      : (leftSide === 'ETH' && rightSide === 'ETH') ? setNumberLeft(value)
-      : (leftSide === 'ETH' && rightSide === 'BTC') ? setNumberLeft(value * btc / eth)
+      : (leftSide === 'ETH' && rightSide === 'ETH') ? setNumberLeft(value) 
+      : (leftSide === 'ETH' && rightSide === 'BTC') ? setNumberLeft(Math.round(((value * btc / eth) + Number.EPSILON) * 100000000) / 100000000)
       : (leftSide === 'ETH' && rightSide === 'USDT') ? setNumberLeft(value * usdteth)
   
       : (leftSide === 'USDT' && rightSide === 'USDT') ? setNumberLeft(value)
-      : (leftSide === 'USDT' && rightSide === 'BTC') ? setNumberLeft(value * btc)
-      : (leftSide === 'USDT' && rightSide === 'ETH') ? setNumberLeft(value * eth)
+      : (leftSide === 'USDT' && rightSide === 'BTC') ? setNumberLeft(Math.round(((value * btc) + Number.EPSILON) * 100000000) / 100000000)
+      : (leftSide === 'USDT' && rightSide === 'ETH') ? setNumberLeft(Math.round(((value * eth) + Number.EPSILON) * 100000000) / 100000000)
   
     : null
     }
@@ -83,26 +83,24 @@ export default function Home() {
     if (e.currentTarget.name === 'left') setNumberLeft(Number(e.currentTarget.value))
     else if (e.currentTarget.name === 'right') setNumberRight(Number(e.currentTarget.value))
 
-    calculate(Number(e.currentTarget.value), e.currentTarget.name, leftSide, rightSide)
+    if (btc && eth) calculate(Number(e.currentTarget.value), e.currentTarget.name, leftSide, rightSide)
   }
 
 
   const handleLeftSide = (e: React.FormEvent<HTMLSelectElement>) => {
     setLeftSide(e.currentTarget.value)
-    calculate(Number(numberLeft), "left", e.currentTarget.value, rightSide)
+    if (btc && eth) calculate(Number(numberLeft), "left", e.currentTarget.value, rightSide)
   }
 
   const handleRightSide = (e: React.FormEvent<HTMLSelectElement>) => {
     setRightSide(e.currentTarget.value)
-    calculate(Number(numberRight), "right", leftSide, e.currentTarget.value)
+    if (btc && eth) calculate(Number(numberRight), "right", leftSide, e.currentTarget.value)
   }
-
-
 
   return (
     <main>
 
-      <input onChange={handleChange} value={numberLeft} name="left"></input>
+      <input onChange={handleChange} value={numberLeft} name="left" type="number" min={0}></input>
 
       <select onChange={handleLeftSide} defaultValue="BTC">
         <option value="BTC" defaultChecked>BTC</option>
@@ -111,7 +109,7 @@ export default function Home() {
       </select>
 
 
-      <input onChange={handleChange} value={numberRight} name="right"></input>
+      <input onChange={handleChange} value={numberRight} name="right" type="number" min={0}></input>
 
       <select onChange={handleRightSide} defaultValue="ETH">
         <option value="BTC">BTC</option>
