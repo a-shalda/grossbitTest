@@ -1,5 +1,13 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html:focus-within {scroll-behavior: smooth;}
+
 body {
-  background-color: rgb(235, 235, 235);
+  background-color: rgb(253, 253, 253);
   display: flex;
   flex-direction: column;
   align-items:center;
@@ -8,5 +16,56 @@ body {
 }
 
 .main {
+  display: flex;
   justify-content: center;
+  gap: 1rem;
+  flex-direction: column;
+  color: rgb(123, 123, 123);
+}
+
+@media only screen and (min-width: 700px) {
+  .main {
+    flex-direction: row;
+    gap: 2rem;
+  }
+}
+
+.input {
+  border: 2px solid rgb(213, 213, 213);  
+  color: rgb(68, 68, 68);
+  height: 3rem;
+  font-size: 1.2rem;
+  width: 320px;
+  padding-left: 0.5rem;
+  padding-right: 6.5rem;
+  padding-block: 1rem;
+  border-radius: 0.5rem;
+}
+
+.select {
+  border: 2px solid rgb(213, 213, 213);  
+  color: rgb(77, 77, 77);
+  padding-left: 2.4rem;
+  width: 6rem;
+  height: 2rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  height: 3rem;
+  border-bottom-right-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+  margin-left: -96px;
+  background-color: rgb(253, 253, 253);
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.wrapper {
+  position: relative;
+}
+
+.icon {
+  position: absolute;
+  right: 3.8rem;
+  top: 0.7rem;
 }

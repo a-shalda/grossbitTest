@@ -3,6 +3,12 @@
 import styles from './page.module.css'
 import { useEffect, useState } from 'react'
 
+import { IconContext } from "react-icons";
+
+import { FaBitcoin } from "react-icons/fa";
+import { FaEthereum } from "react-icons/fa";
+import { SiTether } from "react-icons/si";
+
 export default function Home() {
 
   const [btc, setBtc] = useState<number>(0)
@@ -105,30 +111,71 @@ export default function Home() {
     if (btc && eth) calculate(Number(numberRight), "right", leftSide, e.currentTarget.value)
   }
 
+
+  function BtcIcon() {
+    return (
+      <IconContext.Provider
+        value={{ color: '#f7931a', size: '26px' }}
+      >
+        <div>
+          <FaBitcoin className='icon'/>
+        </div>
+      </IconContext.Provider>
+    );
+  }
+  function EthIcon() {
+    return (
+      <IconContext.Provider
+        value={{ color: '#716b94', size: '26px' }}
+      >
+        <div>
+          <FaEthereum className='icon'/>
+        </div>
+      </IconContext.Provider>
+    );
+  }
+  function UsdtIcon() {
+    return (
+      <IconContext.Provider
+        value={{ color: '#26A17B', size: '26px' }}
+      >
+        <div>
+          <SiTether className='icon'/>
+        </div>
+      </IconContext.Provider>
+    );
+  }
+
   return (
     <main className='main'>
 
-      <div>
-        <input onChange={handleChange} value={numberLeft} name="left" type="number" min={0} max={1000000000}></input>
-
-        <select onChange={handleLeftSide} defaultValue="BTC">
-          <option value="BTC" defaultChecked>BTC</option>
+      <div className='wrapper'>
+        <input onChange={handleChange} value={numberLeft} name="left" type="number" min={0} max={1000000000} className='input'></input>
+    
+        <select onChange={handleLeftSide} defaultValue="BTC" className='select'>
+          <option className="btcLeft" value="BTC" defaultChecked>BTC</option>
           <option value="ETH">ETH</option>
           <option value="USDT">USDT</option>
         </select>
+
+        {(leftSide === 'BTC') ? <BtcIcon /> : (leftSide === 'ETH') ? <EthIcon /> : (leftSide === 'USDT') ? <UsdtIcon /> : null}
+
       </div>
 
+      
+      <div className='wrapper'>
+        <input onChange={handleChange} value={numberRight} name="right" type="number" min={0} max={1000000000} className='input'></input>
 
-      <div>
-        <input onChange={handleChange} value={numberRight} name="right" type="number" min={0} max={1000000000}></input>
-
-        <select onChange={handleRightSide} defaultValue="ETH">
+        <select onChange={handleRightSide} defaultValue="ETH" className='select'>
           <option value="BTC">BTC</option>
           <option value="ETH" defaultChecked>ETH</option>
           <option value="USDT">USDT</option>
         </select>
+
+        {(rightSide === 'BTC') ? <BtcIcon /> : (rightSide === 'ETH') ? <EthIcon /> : (rightSide === 'USDT') ? <UsdtIcon /> : null}
+
       </div>
-      
+
     </main>
   )
 }
