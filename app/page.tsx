@@ -17,12 +17,13 @@ export default function Home() {
   const usdtbtc = 0.00002426
   const usdteth = 0.00040572
 
-
   const [leftSide, setLeftSide] = useState<string>("BTC")
   const [rightSide, setRightSide] = useState<string>("ETH")
 
   const [numberLeft, setNumberLeft] = useState<number | string >("")
   const [numberRight, setNumberRight] = useState<number | string >("")
+
+  const [sideFocus, setSideFocus] = useState<string>("")
 
   useEffect(() => {
     fetch('https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT')
@@ -85,6 +86,7 @@ export default function Home() {
 
     if (e.currentTarget.name === 'left') {
       setNumberLeft(Number(e.currentTarget.value))
+      setSideFocus('left')
 
       if (e.currentTarget.value === "00" || e.currentTarget.value.match(/0\d/i)) setNumberLeft("")
       else {
@@ -93,6 +95,7 @@ export default function Home() {
     }
     else if (e.currentTarget.name === 'right') {
       setNumberRight(Number(e.currentTarget.value))
+      setSideFocus('right')
 
       if (e.currentTarget.value === "00" || e.currentTarget.value.match(/0\d/i)) setNumberRight("")
       else {
@@ -103,11 +106,13 @@ export default function Home() {
 
   const handleLeftSide = (e: React.FormEvent<HTMLSelectElement>) => {
     setLeftSide(e.currentTarget.value)
+    setSideFocus('left')
     if (btc && eth) calculate(Number(numberLeft), "left", e.currentTarget.value, rightSide)
   }
 
   const handleRightSide = (e: React.FormEvent<HTMLSelectElement>) => {
     setRightSide(e.currentTarget.value)
+    setSideFocus('right')
     if (btc && eth) calculate(Number(numberRight), "right", leftSide, e.currentTarget.value)
   }
 
@@ -146,11 +151,35 @@ export default function Home() {
     );
   }
 
+  const inputLeft = document.querySelector('.inputLeft') as HTMLInputElement | null;
+  const inputRight = document.querySelector('.inputRight') as HTMLInputElement | null;
+
+  let inputLeftColor = "blue"
+  let inputRightColor = "blue"
+
+  {(leftSide === 'BTC') ? inputLeftColor = "#f7931a" : (leftSide === 'ETH') ? inputLeftColor = "#716b94" : (leftSide === 'USDT') ? inputLeftColor = "#26A17B" : ""}
+  {(rightSide === 'BTC') ? inputRightColor = "#f7931a" : (rightSide === 'ETH') ? inputRightColor = "#716b94" : (rightSide === 'USDT') ? inputRightColor = "#26A17B" : ""}
+
+  inputLeft?.addEventListener('focus', () => {
+    inputLeft.style.outline = `2px solid ${inputLeftColor}`;
+  })
+  inputLeft?.addEventListener('blur', () => {
+    inputLeft.style.outline = 'none';
+  })
+
+  inputRight?.addEventListener('focus', () => {
+    inputRight.style.outline = `2px solid ${inputRightColor}`;
+  })
+  inputRight?.addEventListener('blur', () => {
+    inputRight.style.outline = 'none';
+  })
+
+
   return (
     <main className='main'>
 
       <div className='wrapper'>
-        <input onChange={handleChange} value={numberLeft} name="left" type="number" min={0} max={1000000000} className='input'></input>
+        <input onChange={handleChange} value={numberLeft} name="left" type="number" min={0} max={1000000000} className='input inputLeft'></input>
     
         <select onChange={handleLeftSide} defaultValue="BTC" className='select'>
           <option className="btcLeft" value="BTC" defaultChecked>BTC</option>
@@ -164,7 +193,7 @@ export default function Home() {
 
       
       <div className='wrapper'>
-        <input onChange={handleChange} value={numberRight} name="right" type="number" min={0} max={1000000000} className='input'></input>
+        <input onChange={handleChange} value={numberRight} name="right" type="number" min={0} max={1000000000} className='input inputRight'></input>
 
         <select onChange={handleRightSide} defaultValue="ETH" className='select'>
           <option value="BTC">BTC</option>
