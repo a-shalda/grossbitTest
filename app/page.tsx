@@ -83,7 +83,12 @@ export default function Home() {
     if (e.currentTarget.name === 'left') setNumberLeft(Number(e.currentTarget.value))
     else if (e.currentTarget.name === 'right') setNumberRight(Number(e.currentTarget.value))
 
-    if (btc && eth) calculate(Number(e.currentTarget.value), e.currentTarget.name, leftSide, rightSide)
+    if (e.currentTarget.value === "00" || e.currentTarget.value.match(/0\d/i)) setNumberLeft("")
+    else {
+
+      if (btc && eth) calculate(Number(e.currentTarget.value), e.currentTarget.name, leftSide, rightSide)
+
+    }
   }
 
 
@@ -100,7 +105,7 @@ export default function Home() {
   return (
     <main>
 
-      <input onChange={handleChange} value={numberLeft} name="left" type="number" min={0}></input>
+      <input onChange={handleChange} value={numberLeft} name="left" type="number" min={0} max={1000000000}></input>
 
       <select onChange={handleLeftSide} defaultValue="BTC">
         <option value="BTC" defaultChecked>BTC</option>
@@ -109,7 +114,7 @@ export default function Home() {
       </select>
 
 
-      <input onChange={handleChange} value={numberRight} name="right" type="number" min={0}></input>
+      <input onChange={handleChange} value={numberRight} name="right" type="number" min={0} max={1000000000}></input>
 
       <select onChange={handleRightSide} defaultValue="ETH">
         <option value="BTC">BTC</option>
