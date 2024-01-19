@@ -6,3 +6,7 @@ body {
   justify-content:center;
   min-height: 90vh;
 }
+
+.main {
+  justify-content: center;
+}

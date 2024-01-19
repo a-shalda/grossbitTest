@@ -3,7 +3,6 @@
 import styles from './page.module.css'
 import { useEffect, useState } from 'react'
 
-
 export default function Home() {
 
   const [btc, setBtc] = useState<number>(0)
@@ -12,12 +11,12 @@ export default function Home() {
   const usdtbtc = 0.00002426
   const usdteth = 0.00040572
 
+
   const [leftSide, setLeftSide] = useState<string>("BTC")
   const [rightSide, setRightSide] = useState<string>("ETH")
 
   const [numberLeft, setNumberLeft] = useState<number | string >("")
   const [numberRight, setNumberRight] = useState<number | string >("")
-
 
   useEffect(() => {
     fetch('https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT')
@@ -74,23 +73,27 @@ export default function Home() {
   
     : null
     }
-
   }
-
 
   const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
 
-    if (e.currentTarget.name === 'left') setNumberLeft(Number(e.currentTarget.value))
-    else if (e.currentTarget.name === 'right') setNumberRight(Number(e.currentTarget.value))
+    if (e.currentTarget.name === 'left') {
+      setNumberLeft(Number(e.currentTarget.value))
 
-    if (e.currentTarget.value === "00" || e.currentTarget.value.match(/0\d/i)) setNumberLeft("")
-    else {
+      if (e.currentTarget.value === "00" || e.currentTarget.value.match(/0\d/i)) setNumberLeft("")
+      else {
+        if (btc && eth) calculate(Number(e.currentTarget.value), e.currentTarget.name, leftSide, rightSide)
+      }
+    }
+    else if (e.currentTarget.name === 'right') {
+      setNumberRight(Number(e.currentTarget.value))
 
-      if (btc && eth) calculate(Number(e.currentTarget.value), e.currentTarget.name, leftSide, rightSide)
-
+      if (e.currentTarget.value === "00" || e.currentTarget.value.match(/0\d/i)) setNumberRight("")
+      else {
+        if (btc && eth) calculate(Number(e.currentTarget.value), e.currentTarget.name, leftSide, rightSide)
+      }
     }
   }
-
 
   const handleLeftSide = (e: React.FormEvent<HTMLSelectElement>) => {
     setLeftSide(e.currentTarget.value)
@@ -103,25 +106,29 @@ export default function Home() {
   }
 
   return (
-    <main>
+    <main className='main'>
 
-      <input onChange={handleChange} value={numberLeft} name="left" type="number" min={0} max={1000000000}></input>
+      <div>
+        <input onChange={handleChange} value={numberLeft} name="left" type="number" min={0} max={1000000000}></input>
 
-      <select onChange={handleLeftSide} defaultValue="BTC">
-        <option value="BTC" defaultChecked>BTC</option>
-        <option value="ETH">ETH</option>
-        <option value="USDT">USDT</option>
-      </select>
+        <select onChange={handleLeftSide} defaultValue="BTC">
+          <option value="BTC" defaultChecked>BTC</option>
+          <option value="ETH">ETH</option>
+          <option value="USDT">USDT</option>
+        </select>
+      </div>
 
 
-      <input onChange={handleChange} value={numberRight} name="right" type="number" min={0} max={1000000000}></input>
+      <div>
+        <input onChange={handleChange} value={numberRight} name="right" type="number" min={0} max={1000000000}></input>
 
-      <select onChange={handleRightSide} defaultValue="ETH">
-        <option value="BTC">BTC</option>
-        <option value="ETH" defaultChecked>ETH</option>
-        <option value="USDT">USDT</option>
-      </select>
-
+        <select onChange={handleRightSide} defaultValue="ETH">
+          <option value="BTC">BTC</option>
+          <option value="ETH" defaultChecked>ETH</option>
+          <option value="USDT">USDT</option>
+        </select>
+      </div>
+      
     </main>
   )
 }
