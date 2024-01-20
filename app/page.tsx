@@ -23,8 +23,8 @@ export default function Home() {
   const [leftSide, setLeftSide] = useState<string>("BTC")
   const [rightSide, setRightSide] = useState<string>("ETH")
 
-  const [numberLeft, setNumberLeft] = useState<number | string >("")
-  const [numberRight, setNumberRight] = useState<number | string >("")
+  const [numberLeft, setNumberLeft] = useState<number | string >(0)
+  const [numberRight, setNumberRight] = useState<number | string >(0)
 
   useEffect(() => {
     fetch('https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT')
@@ -159,6 +159,14 @@ export default function Home() {
     );
   }
 
+  let coinNameLeft
+  let coinNameRight
+
+  {(leftSide === 'BTC') ? coinNameLeft = 'Bitcoin = ' : (leftSide === 'ETH') ? coinNameLeft = 'Etherium = ' : (leftSide === 'USDT') ? coinNameLeft = 'Tether = ' : null}
+  {(rightSide === 'BTC') ? coinNameRight = 'Bitcoin' : (rightSide === 'ETH') ? coinNameRight = 'Etherium' : (rightSide === 'USDT') ? coinNameRight = 'Tether' : null}
+
+  let today
+  if (btc && eth) today = new Date().toLocaleString("ru-RU", {timeZone: "Europe/Moscow"}) + ' МСК'
 
   return (
     <main className='main'>
@@ -188,6 +196,15 @@ export default function Home() {
         </select>
 
         {(rightSide === 'BTC') ? <BtcIcon /> : (rightSide === 'ETH') ? <EthIcon /> : (rightSide === 'USDT') ? <UsdtIcon /> : null}
+
+        <div className='calculated'>
+          <div>
+            {numberLeft} {coinNameLeft} {numberRight} {coinNameRight}
+          </div>
+          <p className='calculated__text'>
+            Данные носят ознакомительный характер {today}
+          </p>
+        </div>
 
       </div>
 

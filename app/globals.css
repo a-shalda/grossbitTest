@@ -84,3 +84,23 @@ body {
 .iconSwitch {
   justify-self: center;
 }
+
+.calculated {
+  color: #2d2d2d;
+  position: absolute;
+  top: 70px;
+  left: 2px;
+  font-size: 0.8rem;
+}
+
+@media only screen and (min-width: 700px) {
+  .calculated {
+    left: -364px;
+  }
+}
+
+.calculated__text {
+  padding-top: 0.2rem;
+  color: #898989;
+  font-size: 0.7rem;
+}
