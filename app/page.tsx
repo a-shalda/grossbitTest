@@ -1,15 +1,18 @@
 "use client"
 
 import styles from './page.module.css'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 
 import { IconContext } from "react-icons";
 
 import { FaBitcoin } from "react-icons/fa";
 import { FaEthereum } from "react-icons/fa";
 import { SiTether } from "react-icons/si";
+import { FaArrowRightArrowLeft } from "react-icons/fa6";
 
 export default function Home() {
+
+  const ref = useRef(null);
 
   const [btc, setBtc] = useState<number>(0)
   const [eth, setEth] = useState<number>(0)
@@ -22,8 +25,6 @@ export default function Home() {
 
   const [numberLeft, setNumberLeft] = useState<number | string >("")
   const [numberRight, setNumberRight] = useState<number | string >("")
-
-  const [sideFocus, setSideFocus] = useState<string>("")
 
   useEffect(() => {
     fetch('https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT')
@@ -85,17 +86,18 @@ export default function Home() {
   const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
 
     if (e.currentTarget.name === 'left') {
-      setNumberLeft(Number(e.currentTarget.value))
-      setSideFocus('left')
 
-      if (e.currentTarget.value === "00" || e.currentTarget.value.match(/0\d/i)) setNumberLeft("")
+      if (e.currentTarget.value.match(/a/i)) console.log('hey')
+      console.log(e.currentTarget.value)
+
+      if (e.currentTarget.value === "00" || e.currentTarget.value.match(/0\d/i) || e.currentTarget.value.match(/[^0-9]/i)) setNumberLeft("")
       else {
+        setNumberLeft(Number(e.currentTarget.value))
         if (btc && eth) calculate(Number(e.currentTarget.value), e.currentTarget.name, leftSide, rightSide)
       }
     }
     else if (e.currentTarget.name === 'right') {
       setNumberRight(Number(e.currentTarget.value))
-      setSideFocus('right')
 
       if (e.currentTarget.value === "00" || e.currentTarget.value.match(/0\d/i)) setNumberRight("")
       else {
@@ -106,13 +108,11 @@ export default function Home() {
 
   const handleLeftSide = (e: React.FormEvent<HTMLSelectElement>) => {
     setLeftSide(e.currentTarget.value)
-    setSideFocus('left')
     if (btc && eth) calculate(Number(numberLeft), "left", e.currentTarget.value, rightSide)
   }
 
   const handleRightSide = (e: React.FormEvent<HTMLSelectElement>) => {
     setRightSide(e.currentTarget.value)
-    setSideFocus('right')
     if (btc && eth) calculate(Number(numberRight), "right", leftSide, e.currentTarget.value)
   }
 
@@ -150,36 +150,24 @@ export default function Home() {
       </IconContext.Provider>
     );
   }
-
-  const inputLeft = document.querySelector('.inputLeft') as HTMLInputElement | null;
-  const inputRight = document.querySelector('.inputRight') as HTMLInputElement | null;
-
-  let inputLeftColor = "blue"
-  let inputRightColor = "blue"
-
-  {(leftSide === 'BTC') ? inputLeftColor = "#f7931a" : (leftSide === 'ETH') ? inputLeftColor = "#716b94" : (leftSide === 'USDT') ? inputLeftColor = "#26A17B" : ""}
-  {(rightSide === 'BTC') ? inputRightColor = "#f7931a" : (rightSide === 'ETH') ? inputRightColor = "#716b94" : (rightSide === 'USDT') ? inputRightColor = "#26A17B" : ""}
-
-  inputLeft?.addEventListener('focus', () => {
-    inputLeft.style.outline = `2px solid ${inputLeftColor}`;
-  })
-  inputLeft?.addEventListener('blur', () => {
-    inputLeft.style.outline = 'none';
-  })
-
-  inputRight?.addEventListener('focus', () => {
-    inputRight.style.outline = `2px solid ${inputRightColor}`;
-  })
-  inputRight?.addEventListener('blur', () => {
-    inputRight.style.outline = 'none';
-  })
+  function SwitchIcon() {
+    return (
+      <IconContext.Provider
+        value={{ color: '#999999', size: '14px'}}
+      >
+        <div>
+          <FaArrowRightArrowLeft className='iconSwitch'/>
+        </div>
+      </IconContext.Provider>
+    );
+  }
 
 
   return (
     <main className='main'>
 
       <div className='wrapper'>
-        <input onChange={handleChange} value={numberLeft} name="left" type="number" min={0} max={1000000000} className='input inputLeft'></input>
+        <input onChange={handleChange} value={numberLeft} name="left" type="number" min={0} max={1000000000} className='input inputLeft' placeholder="..."></input>
     
         <select onChange={handleLeftSide} defaultValue="BTC" className='select'>
           <option className="btcLeft" value="BTC" defaultChecked>BTC</option>
@@ -191,9 +179,10 @@ export default function Home() {
 
       </div>
 
+      <SwitchIcon />
       
       <div className='wrapper'>
-        <input onChange={handleChange} value={numberRight} name="right" type="number" min={0} max={1000000000} className='input inputRight'></input>
+        <input onChange={handleChange} value={numberRight} name="right" type="number" min={0} max={1000000000} className='input inputRight' placeholder="..."></input>
 
         <select onChange={handleRightSide} defaultValue="ETH" className='select'>
           <option value="BTC">BTC</option>

@@ -18,21 +18,21 @@ body {
 .main {
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 1rem;
   flex-direction: column;
-  color: rgb(123, 123, 123);
+  color: #7b7b7b;
 }
 
 @media only screen and (min-width: 700px) {
   .main {
     flex-direction: row;
-    gap: 2rem;
   }
 }
 
 .input {
-  border: 2px solid rgb(213, 213, 213);  
-  color: rgb(68, 68, 68);
+  border: 2px solid #d5d5d5;  
+  color: #444444;
   height: 3rem;
   font-size: 1.2rem;
   width: 320px;
@@ -69,4 +69,8 @@ body {
   position: absolute;
   right: 3.8rem;
   top: 0.7rem;
+}
+
+.iconSwitch {
+  justify-self: center;
 }
