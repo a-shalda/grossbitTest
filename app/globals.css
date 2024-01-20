@@ -46,7 +46,7 @@ body {
 .select {
   border: 2px solid rgb(213, 213, 213);  
   color: rgb(77, 77, 77);
-  padding-left: 2.4rem;
+  /* padding-left: 2.4rem; */
   width: 6rem;
   height: 2rem;
   font-size: 0.8rem;
@@ -59,6 +59,11 @@ body {
   position: absolute;
   top: 0;
   right: 0;
+  text-indent: 2px;
+}
+
+.input:focus {
+  outline: 2px solid gray;
 }
 
 .wrapper {
@@ -67,7 +72,7 @@ body {
 
 .icon {
   position: absolute;
-  right: 3.8rem;
+  right: 1.3rem;
   top: 0.7rem;
 }
 

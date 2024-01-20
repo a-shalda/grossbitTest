@@ -87,9 +87,6 @@ export default function Home() {
 
     if (e.currentTarget.name === 'left') {
 
-      if (e.currentTarget.value.match(/a/i)) console.log('hey')
-      console.log(e.currentTarget.value)
-
       if (e.currentTarget.value === "00" || e.currentTarget.value.match(/0\d/i) || e.currentTarget.value.match(/[^0-9]/i)) setNumberLeft("")
       else {
         setNumberLeft(Number(e.currentTarget.value))
@@ -170,7 +167,7 @@ export default function Home() {
         <input onChange={handleChange} value={numberLeft} name="left" type="number" min={0} max={1000000000} className='input inputLeft' placeholder="..."></input>
     
         <select onChange={handleLeftSide} defaultValue="BTC" className='select'>
-          <option className="btcLeft" value="BTC" defaultChecked>BTC</option>
+          <option value="BTC" defaultChecked>BTC</option>
           <option value="ETH">ETH</option>
           <option value="USDT">USDT</option>
         </select>
